@@ -158,4 +158,27 @@ public class LineUpTest {
 		Assert.assertTrue(lineUp.checkInvariant());
 	}
 
+	@Test(expected = Exception.class)
+	public void testIteratorPrivacy() { //Ensure we can't remove elements using the iterator's remove function
+		// some venues, acts and sessions and events to be used in testing
+		Venue[] venues =
+				{ new Venue("House of Noise"), new Venue("Arena"),
+						new Venue("The Corner") };
+		String[] acts = { "Def Leppard", "Behemoth", "Megadeth", "Hammerfall" };
+		int[] sessions = { 8, 4, 5 };
+		Event[] events =
+				{ new Event(venues[1], sessions[0], acts[0]),
+						new Event(venues[0], sessions[1], acts[1]),
+						new Event(venues[1], sessions[1], acts[2]),
+						new Event(venues[1], sessions[2], acts[3]) };
+
+		// the line-up under test constructed by adding all of the events above
+		LineUp lineUp = new LineUp();
+		for (Event e : events) {
+			lineUp.addEvent(e);
+		}
+
+		lineUp.iterator().next();
+		lineUp.iterator().remove();
+	}
 }
